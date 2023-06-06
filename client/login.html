@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <div class="main">
+        <div class="input-field">
+            <form action="#">
+                <label for="id">UserId: </label>
+                <input type="text" id="id">
+                <label for="password">Password: </label>
+                <input type="text" id="password">
+            </form>
+            <button onclick="submit()">Submit</button>
+        </div>
+    </div>
+</body>
+<script>
+    const login = (requiredData) => {
+        return fetch('http://localhost:5001/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            id : requiredData.id,
+            password : requiredData.password,
+        })
+    })
+    .then(res => {
+        return res.json();
+    })
+    .then(data => {
+        console.log(data.memberDetail.role);
+        let dataToLocalStorage = {'role' : data.memberDetail.role};
+        window.localStorage.setItem('dataToLocalStorage', JSON.stringify(dataToLocalStorage));
+    })
+    .catch(err => console.log("some error occurred!"));
+    }
+    const submit = () =>{
+        let id = document.getElementById('id').value;
+        let password = document.getElementById('password').value;
+        const requiredData = new Object;
+        requiredData.id = id;
+        requiredData.password = password;
+        login(requiredData);
+    }
+</script>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flat Detail</title>
+    <style>
+        .flats{
+            background-color: #F2F2F2;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="get-flat">
+        <form action="#">
+            <label for="floor">Floor: </label>
+            <input name="floor" id="floor" type="text" placeholder="enter floor..." required>
+        </form>
+        <button type="button" onclick="submit()">Submit</button>
+    </div>
+    <h4 id="floor"></h4>
+    <div class="flat-list" id="flat-list"></div> <!-- main container to append -->
+</body>
+<script>
+    //to input value inside top heading
+    const floorNo = document.getElementById('floor');
+    //main div
+    const container = document.getElementById('flat-list')
+    const findFlat = (requestData) => {
+    return fetch('http://localhost:5001/register/getFlatDetail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({floor : requestData})
+    })
+    .then(res => {
+        return res.json();
+    })
+    .then(data => {
+        for(let i=0;i<data.length;i++){
+            //creating container->div
+            const div = document.createElement('div');
+            div.className = "flats";
+            //creating container->div->(wing, flatno, owner, contact)
+            const wing = document.createElement('div');
+            const flatNo = document.createElement('div');
+            const owner = document.createElement('div');
+            const contact = document.createElement('div');
+            //writing values for each div
+            wing.innerHTML = "Wing: "+data[i].wing;
+            flatNo.innerHTML = "Flat: " + (data[i].floor*100+data[i].flatNo);
+            owner.innerHTML = "Owner: " + data[i].owner;
+            contact.innerHTML = "Contact: " + data[i].contact;
+            //appending (wing, flatNo, owner, contact) to div
+            div.appendChild(wing);
+            div.appendChild(flatNo);
+            div.appendChild(owner);
+            div.appendChild(contact);
+            //appending div to container
+            container.appendChild(div);
+        }
+    })
+    .catch(error => {
+        document.getElementById('flat-list').innerHTML = "Some error occurred!";
+    });
+};
+
+const submit = () => {
+    const requestData = document.getElementById('floor').value;
+    floorNo.innerHTML = requestData;
+    findFlat(requestData);
+};
+</script>
+</html>

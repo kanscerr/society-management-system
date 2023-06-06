@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Member List</title>
+    <style>
+        .members{
+            background-color: #F2F2F2;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="member-list" id="member-list"></div>
+</body>
+<script>
+    userSession = JSON.parse(window.localStorage.getItem('dataToLocalStorage'));
+    console.log(userSession.role);
+    const container = document.getElementById('member-list')
+    const getIndividualMemberDetails = () => {
+        return fetch('http://localhost:5001/society/getAllMembers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({role : userSession.role})
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            console.log(data);
+        })
+        .catch(err => {
+            console.log("some error occurred!")
+        })
+    }
+    const members = () => {
+        return fetch('http://localhost:5001/society/getAllMembers', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({role : userSession.role})
+        })
+        .then(res => {
+            return res.json();
+        })
+        .then(data => {
+            console.log(data);
+            for(let i=0;i<data.length;i++){
+            //creating container->div
+            const div = document.createElement('div');
+            div.className = "members";
+            //creating container->div->(wing, flatno, owner, contact)
+            const name = document.createElement('div');
+            const email = document.createElement('div');
+            const contact = document.createElement('div');
+            const role = document.createElement('div');
+            const isAClubhouseMember = document.createElement('div');
+            const wing = document.createElement('div');
+            const floor = document.createElement('div');
+            const flat = document.createElement('div');
+            const isOnRent = document.createElement('div');
+            const detailed = document.createElement('button');
+            //writing values for each div
+            name.innerHTML = "Name: "+data[i].memberDetail.name;
+            email.innerHTML = "Email: "+data[i].memberDetail.email;
+            contact.innerHTML = "Contact: "+data[i].memberDetail.contact;
+            role.innerHTML = "Role: "+data[i].memberDetail.role;
+            wing.innerHTML = "Wing: "+data[i].addressDetail.wing;
+            floor.innerHTML = "Floor: "+data[i].addressDetail.floor
+            flat.innerHTML = "Flat: " + (data[i].addressDetail.floor*100+data[i].flatNo);
+            // button.onclick = getIndividualMemberDetails();
+            //appending (wing, flatNo, owner, contact) to div
+            div.appendChild(name);
+            div.appendChild(email);
+            div.appendChild(contact);
+            div.appendChild(role);
+            div.appendChild(wing);
+            div.appendChild(floor);
+            div.appendChild(flat);
+            div.appendChild(button);
+            //appending div to container
+            container.appendChild(div);
+        }
+        })
+        .catch(err => {
+            console.log("some error occurred!")
+        })
+    }
+    members();
+</script>
+</html>

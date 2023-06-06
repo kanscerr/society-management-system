@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+</head>
+<body>
+    <div class="input-form">
+        <form action="#" style="display: flex; flex-direction:column;">
+            <fieldset style="margin-bottom: 20px; display: flex; flex-direction:column;">
+                <legend>Personal Information</legend>
+                <label for="name">Name: </label>
+                <input type="text" id="name" placeholder="Enter full name..." style="width: 200px; height: 30px">
+                <label for="name">Email: </label>
+                <input type="text" id="email" placeholder="Enter your email..." style="width: 200px; height: 30px">
+                <label for="name">Contact: </label>
+                <input type="text" id="contact" placeholder="Enter contact number..." style="width: 200px; height: 30px">
+            </fieldset>
+            <label for="name">Role in society: </label>
+            <select name="role" id="role" style="width: 200px; height: 30px; margin-bottom: 20px;">
+                <option value="Admin">Admin</option>
+                <option value="Resident">Resident</option>
+                <option value="Staff">Staff</option>
+            </select>
+            <fieldset style="margin-bottom: 20px; display: flex; flex-direction:column;">
+                <legend>Flat Information</legend>
+                <label for="Wing">Wing: </label>
+                <input type="text" id="wing" placeholder="Enter wing..." style="width: 200px; height: 30px">
+                <label for="Floor">Floor: </label>
+                <input type="text" id="floor" placeholder="Enter floor..." style="width: 200px; height: 30px">
+                <label for="Flat">Flat: </label>
+                <input type="text" id="flat" placeholder="Enter flat..." style="width: 200px; height: 30px">
+            </fieldset>
+        </form>
+        <button type="button" onclick="submit()">Submit</button>
+    </div>
+</body>
+<script>
+    // Function to generate a random password
+    const generatePassword = () => {
+        const length = 10; //desired length of the password
+        const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()'; //characters to include in the password
+        let password = '';
+
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * charset.length);
+            password += charset.charAt(randomIndex);
+        }
+
+        return password;
+    };
+    const registerNewFlat = (requiredData) => {
+        return fetch('http://localhost:5001/register/newFlat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            name : requiredData.name,
+            email : requiredData.email,
+            contact : requiredData.contact,
+            role : requiredData.role,
+            wing : requiredData.wing,
+            floor : requiredData.floor,
+            flat : requiredData.flatNo,
+            password : generatePassword() //generating system generated password
+        })
+    })
+    .then(res => {
+        return res.json();
+    })
+    .then(data => {
+        console.log(data);
+    })
+    .catch(err => console.log("some error occurred!"));
+    }
+    const submit = () => {
+        //reading all information from input fields
+        let name = document.getElementById('name').value;
+        let email = document.getElementById('email').value;
+        let contact = document.getElementById('contact').value;
+        let role = document.getElementById('role').value;
+        let wing = document.getElementById('wing').value;
+        let floor = document.getElementById('floor').value;
+        let flatNo = document.getElementById('flat').value;
+        //inserting all in an object
+        const requiredData = new Object;
+        requiredData.name = name;
+        requiredData.email = email;
+        requiredData.contact = contact;
+        requiredData.role = role;
+        requiredData.wing = wing;
+        requiredData.floor = floor;
+        requiredData.flatNo = flatNo;
+        registerNewFlat(requiredData);
+    }
+
+    
+</script>
+</html>
