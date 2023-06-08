@@ -4,13 +4,9 @@ const modelMember = require('../schema/society-members');
 
 //test if password is strong
 function isStrong(pwd) {
-    const alphabetRegex = /^[a-zA-Z]+$/;
-    const numRegex = /[0-9]/;
-    const specialCharRegex = /[!@#$%?&*,.<>|(){}[\]]/;
-    const hasAlphabet = alphabetRegex.test(pwd);
-    const hasNumber = numRegex.test(pwd);
-    const hasSpecialChar = specialCharRegex.test(pwd);
-    return hasAlphabet && hasNumber && hasSpecialChar;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[a-zA-Z\d!.?!@#$%^&*]{8,15}$/;
+    const isStrongPassword = passwordRegex.test(pwd);
+    return isStrongPassword;
 }
 
 
@@ -36,7 +32,17 @@ router.post('/login', (req, res) => {
 //prompt to change password
 router.post('/changePassword', (req, res) => {
     if(req.body.id && req.body.oldPwd && req.body.newPwd && req.body.newPwdConfirm && req.body.newPwd == req.body.newPwdConfirm){
-        res.send(isStrong(req.body.newPwdConfirm));
+        if(isStrong(req.body.newPwd)){
+            modelMember.findOneAndUpdate({'memberDetail.id' : req.body.id, 'password' : req.body.oldPwd},
+                {$set : {'password' : req.body.newPwd}},
+                { new: true } //returns the modified document
+            )
+            .then((data) => res.json(data))
+            .catch((err) => res.json("Oops! Some error occured."))
+        }
+        else{
+            res.json("New password is not strong enough!")
+        }
     }
     else if(req.body.newPwd != req.body.newPwdConfirm){
         res.json("Error: The new password and confirmation password do not match.")

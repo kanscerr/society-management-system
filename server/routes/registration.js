@@ -19,14 +19,14 @@ const generatePassword = () => {
 
 //get flat detail
 router.post('/getFlatDetail', (req, res) => {
-    if(req.body.floor){
-        modelFlats.find({'floor' : req.body.floor}).exec()
+    if(req.body.wing && req.body.floor){
+        modelFlats.find({'wing' : req.body.wing, 'floor' : req.body.floor, 'isVacant' : 'true'}).exec()
         .then((data) => {
             if(Object.keys(data).length === 0){
                 res.json("flat does not exist!");
             }
             else{
-                res.json((data.sort(data.wing)).sort((a,b) => a.wing-b.wing));
+                res.json(data.sort());
             }
         })
     }
@@ -67,7 +67,7 @@ router.post('/newFlat', (req, res) => {
                     // Updating flat's isVacant to false
                     modelFlats.findOneAndUpdate({ 'floor': req.body.floor, 'flatNo': req.body.flat },
                         { $set: { 'isVacant': false, 'owner': req.body.name, 'contact': req.body.contact } },
-                        { new: true }
+                        { new: true } //returns the modified document
                     )
                         .then((data) => res.send(data))
                         .catch((err) => res.send("Some error occurred!"));
