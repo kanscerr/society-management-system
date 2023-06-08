@@ -18,7 +18,6 @@ Since, our project is only server side for now, we will primarily be focussing o
 - Visitor management
 - Testing
 
-
 ### **1.3 Tools**
 ### For this project, we will be using-
 - Node.js
