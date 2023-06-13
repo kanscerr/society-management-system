@@ -10,7 +10,8 @@ const flatDetails = new mongoose.Schema({
     wing : String,
     owner : String,
     contact : String,
-    isVacant : Boolean
+    isVacant : Boolean,
+    price : Number
 })
 
 //creating model

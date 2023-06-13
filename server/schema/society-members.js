@@ -10,6 +10,7 @@ const personalDetail = new mongoose.Schema({
     email : String,
     contact : String,
     role : String,
+    designation : String,
     isClubhouseMember : Boolean
 })
 

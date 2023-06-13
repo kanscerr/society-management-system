@@ -9,27 +9,61 @@ router.post('/newFlat', (req, res) => {
     if(Object.keys(data).length === 0){
         for(let i=1;i<6;i++){
             for(let j=1;j<21;j++){
+                let price;
+                if(i===1){
+                    price = 230000;
+                }
+                else if(i===2){
+                    price = 370000;
+                }
+                else if(i===3){
+                    price = 420000;
+                }
+                else if(i===4){
+                    price = 580000;
+                }
+                else if(i===5){
+                    price = 710000;
+                }
                 const flatDetails = new model({
                     "flatNo" : j,
                     "floor" : i,
                     "wing" : 'A',
                     "owner" : 'Akash Kamble',
                     "contact" : '9528674880',
-                    "isVacant" : true
-                })
-                model.create(flatDetails);//new way to save data in db
+                    "isVacant" : true,
+                    "price" : price
+                })              
+                model.create(flatDetails); 
             }
         }
         for(let i=1;i<6;i++){
             for(let j=1;j<21;j++){
+                let price;
+                if(i===1){
+                    price = 230000;
+                }
+                else if(i===2){
+                    price = 370000;
+                }
+                else if(i===3){
+                    price = 450000;
+                }
+                else if(i===4){
+                    price = 630000;
+                }
+                else if(i===5){
+                    price = 780000;
+                }
                 const flatDetails = new model({
                     "flatNo" : j,
                     "floor" : i,
                     "wing" : 'B',
                     "owner" : 'Akash Kamble',
                     "contact" : '9528674880',
-                    "isVacant" : true
-                })
+                    "isVacant" : true,
+                    "price" : price
+                })              
                 model.create(flatDetails); 
             }
         }
@@ -41,6 +75,3 @@ router.post('/newFlat', (req, res) => {
 })
 
 module.exports = router;
-
-
-

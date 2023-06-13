@@ -19,7 +19,8 @@ Since, our project is only server side for now, we will primarily be focussing o
 - Testing
 
 ### **1.3 Tools**
-### For this project, we will be using-
+
+For this project, we will be using-
 - Node.js
 - Expess.js
 - MongoDB compass for a local database which will be implemented using the mongoose library.
