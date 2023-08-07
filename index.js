@@ -10,6 +10,7 @@ const flatInfoUpload = require("./server/routes/flats");
 const registerNewFlat = require("./server/routes/registration");
 const getAllMembers = require("./server/routes/getAllMembers");
 const login = require("./server/routes/login");
+// const admin = require("./server/routes/addAdmins");
 
 const app = express();
 const PORT = 5001;
@@ -37,6 +38,9 @@ app.use('/society', getAllMembers);
 
 //4. login
 app.use('', login);
+
+//5. admin info
+// app.use('', admin);
 
 
 //server
